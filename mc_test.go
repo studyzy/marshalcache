@@ -116,3 +116,29 @@ func BenchmarkMarshalCacheImpl_Marshal_NoCache(b *testing.B) {
 		mcache.Marshal(block)
 	}
 }
+func BenchmarkMarshalCacheImpl_Unmarshal_UseCache(b *testing.B) {
+	data,_:=json.Marshal( initBlock(1000))
+	mcache := NewMarshalCache(newMemCache(), json.Marshal, json.Unmarshal, false)
+	for i := 0; i < b.N; i++ {
+		var block *Block
+		mcache.Unmarshal(data,&block)
+		//mcache.Marshal(block)
+	}
+}
+func BenchmarkMarshalCacheImpl_Unmarshal_NoCache(b *testing.B) {
+	data,_:=json.Marshal( initBlock2(1000))
+	mcache := NewMarshalCache(newMemCache(), json.Marshal, json.Unmarshal, false)
+	for i := 0; i < b.N; i++ {
+		var block *Block2
+		mcache.Unmarshal(data,&block)
+		mcache.Marshal(block)
+	}
+}
+func BenchmarkMarshalCacheImpl_Unmarshal_Direct(b *testing.B) {
+	data,_:=json.Marshal( initBlock(1000))
+	for i := 0; i < b.N; i++ {
+		var block *Block
+		json.Unmarshal(data,&block)
+		json.Marshal(block)
+	}
+}

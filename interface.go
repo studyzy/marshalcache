@@ -4,6 +4,10 @@ type Cache interface {
 	Put(key string, value []byte) error
 	Get(key string) ([]byte, error)
 }
+type ObjectCache interface {
+	Put(key string, value interface{}) error
+	Get(key string) (interface{}, error)
+}
 type MarshalCache interface {
 	Marshal(obj interface{}) ([]byte, error)
 	Unmarshal(buf []byte, obj interface{}) error
